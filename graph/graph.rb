@@ -17,17 +17,24 @@ class BarnetteGraph
 
 	def initialize(adjacency)
 		@nodes = ["test"]
-		@edges = generateEdges(adjacency)
+		@edges = processEdges(adjacency)
 		@faces = ["test"]
 		@hamiltonianCycles = ["test"]
 	end
 
 
-	def generateEdges(adjacency)
+	def processEdges(adjacency)
 		edges = {}
+		nodes = {}
 		adjacency.each do |e|
 			edge = Edge.new(e)
+			node1 = Node.new(e[0])
+			node2 = Node.new(e[1])
 			edges[edge.name] = edge
+			nodes[node1.name] = node1
+			nodes[node2.name] = node2
+
+			
 		end
 		return edges
 	end
@@ -42,8 +49,11 @@ class BarnetteGraph
 end
 
 class Node
-	def initialize
-		@name = "this"
+	def initialize(node_name)
+		@name = node_name.to_s
+		@adj_nodes = []
+		@adj_faces = []
+		@adj_edges = []
 	end
 end
 
