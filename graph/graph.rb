@@ -11,6 +11,26 @@ class BarnetteGraph
 		@faces
 	end
 
+	def isBipartite?
+		0 == self.faces.select{|f| f.nodes.count != 0 % 2}
+	end
+
+	def isThreeConnected?
+
+	end
+
+	def isHamiltonian?
+
+	end
+
+	def isPlanar?
+
+	end
+
+	def isCubic?
+		0 == self.nodes.select{|n| n.edges.count != 3}
+	end
+
 	def hamiltonianCycles
 	end
 
@@ -27,13 +47,16 @@ class BarnetteGraph
 	end
 
 
-	def initialize(adjacency)
+	def initialize(adjacency, face_hash)
 		@nodes = {}
 		@edges = processEdges(adjacency)
-		@faces = {}
+		@faces = processFaces(faces)
 		@hamiltonianCycles = {}
 	end
 
+	def processFaces(face_hash)
+		face_hash.each do |k,v|
+			face = Face.new(k, v)
 
 
 
@@ -54,9 +77,6 @@ class BarnetteGraph
 					@nodes[node.name] = node
 				end
 			end
-
-
-
 		end
 		return edges
 	end
@@ -123,11 +143,16 @@ class Edge
 end
 
 class Face
-	def initialize
+	def initialize(name, vertices)
+		@name = name
 		@adj_edges = []
 		@radiating_edges = []
-		@adj_nodes = []
+		@adj_nodes = vertices
 		@adj_faces = []
 
+	end
+
+	def name
+		@name
 	end
 end
