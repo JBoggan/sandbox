@@ -28,27 +28,23 @@ class BarnetteGraph
 
 
 	def initialize(adjacency)
-		@nodes = []
+		@nodes = {}
 		@edges = processEdges(adjacency)
-		@faces = []
-		@hamiltonianCycles = []
+		@faces = {}
+		@hamiltonianCycles = {}
 	end
 
 
 	def processEdges(adjacency)
 		edges = {}
-		nodes = {}
 		adjacency.each do |e|
 			edge = Edge.new(e)
-			node1 = Node.new(e[0]) unless node?(e[0])
-			node2 = Node.new(e[1]) unless node?(e[1])
-			node1.add_adj_edge(edge)
-			node2.add_adj_edge(edge)
 			edges[edge.name] = edge
-			nodes[node1.name] = node1
-			nodes[node2.name] = node2
-
-			
+			e.select{|n| !node?(n)}.each do |n|
+				node = Node.new(n)
+				node.add_adj_edge(e)
+				@nodes[node.name] = node
+			end
 		end
 		return edges
 	end
@@ -68,6 +64,10 @@ class Node
 		@adj_nodes = []
 		@adj_faces = []
 		@adj_edges = []
+	end
+
+	def name
+		@name
 	end
 
 	def add_adj_edge(edge_array)
