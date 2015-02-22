@@ -35,16 +35,28 @@ class BarnetteGraph
 	end
 
 
+
+
 	def processEdges(adjacency)
 		edges = {}
 		adjacency.each do |e|
 			edge = Edge.new(e)
 			edges[edge.name] = edge
-			e.select{|n| !node?(n)}.each do |n|
-				node = Node.new(n)
-				node.add_adj_edge(e)
-				@nodes[node.name] = node
+			e.each do |n|
+				if node?(n)	
+					node = self.nodes[n]
+					node.add_adj_edge(e)
+					adj_edges = node.edges
+					adj_edges.map{|x| edge.add_adj_edge(x); edges[x].add_adj_edge(edge.name)}
+				else
+					node = Node.new(n)
+					node.add_adj_edge(e)
+					@nodes[node.name] = node
+				end
 			end
+
+
+
 		end
 		return edges
 	end
@@ -80,6 +92,10 @@ class Node
 		@adj_nodes << node_name
 	end
 
+	def edges
+		@adj_edges
+	end
+
 end
 
 class Edge
@@ -90,6 +106,10 @@ class Edge
 		@adj_edges = []
 		#check to see if adj nodes have non-self edges
 		#if so add adjacent edge
+	end
+
+	def add_adj_edge(new_edge)
+		@adj_edges << new_edge if new_edge != name
 	end
 
 	def name
