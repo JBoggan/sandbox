@@ -175,7 +175,17 @@ class Face
 		@adj_faces = []
 	end
 
-	
+	def add_node
+
+	end
+
+	def add_adj_edge
+
+	end
+
+	def add_radiating_edge
+
+	end
 
 	def edges
 		@adj_edges
