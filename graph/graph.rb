@@ -50,14 +50,24 @@ class BarnetteGraph
 	def initialize(adjacency, face_hash)
 		@nodes = {}
 		@edges = processEdges(adjacency)
-		@faces = processFaces(faces)
+		@faces = face_hash.keys#processFaces(face_hash)
 		@hamiltonianCycles = {}
 	end
 
 	def processFaces(face_hash)
+		faces = {}
 		face_hash.each do |k,v|
 			face = Face.new(k, v)
+			faces[k] = face
+			edges = face.edges
+			edges.each do |e|
 
+
+
+			end
+		end
+		return faces
+	end
 
 
 	def processEdges(adjacency)
@@ -81,12 +91,26 @@ class BarnetteGraph
 		return edges
 	end
 
-
-
-	def addNode
+	def orientEdge(edge)
+		if self.edge?(edge)
+			return edge
+		elsif self.edge?(reverseEdgeName(edge))
+			return reverseEdgeName(edge)
+		else
+			raise "Not an edge!"
+		end
 	end
 
-	def addEdge
+	def orientFaceEdges(name)
+		edge_array = name.split("_")
+		count = edge_array.count - 1
+		unordered_edges = (0..count).map{|t| "#{edge_array[t]}_#{edge_array[t+1]}"}
+		ordered_edges.map{|e| orientEdges(e)}
+	end
+
+	def reverseEdgeName(name)
+		array = name.split("_")
+		return array[1]+"_"+array[0]
 	end
 end
 
@@ -145,11 +169,28 @@ end
 class Face
 	def initialize(name, vertices)
 		@name = name
-		@adj_edges = []
+		@adj_edges = populateEdges(name)
 		@radiating_edges = []
 		@adj_nodes = vertices
 		@adj_faces = []
+	end
 
+	
+
+	def edges
+		@adj_edges
+	end
+
+	def radiating_edges
+		@radiating_edges
+	end
+
+	def nodes
+		@adj_nodes
+	end
+
+	def adj_faces
+		@adj_faces
 	end
 
 	def name
