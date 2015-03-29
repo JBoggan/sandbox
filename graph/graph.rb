@@ -116,8 +116,11 @@ class BarnetteGraph
 
 	def orientFaceEdges(name)
 		edge_array = name.split("_")
+		puts edge_array.to_s
 		count = edge_array.count - 1
 		unordered_edges = (0..count).map{|t| "#{edge_array[t]}_#{edge_array[t+1]}"}
+		unordered_edges.pop
+		puts unordered_edges.to_s
 		unordered_edges.map{|e| orientEdge(e)}
 	end
 
