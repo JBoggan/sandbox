@@ -34,6 +34,11 @@ class BarnetteGraph
 	def hamiltonianCycles
 	end
 
+	def addSquare(edge_one, edge_two)
+
+
+	end
+
 	def node?(name)
 		self.nodes.include?(name)
 	end
@@ -47,28 +52,32 @@ class BarnetteGraph
 	end
 
 
-	def initialize(adjacency, face_hash)
+	def initialize(adjacency, face_array)
 		@nodes = {}
 		@edges = processEdges(adjacency)
-		@faces = face_hash.keys#processFaces(face_hash)
+		@faces = processFaces(face_array)
 		@hamiltonianCycles = {}
 	end
 
-	def processFaces(face_hash)
+	def processFaces(face_array)
 		faces = {}
-		face_hash.each do |k,v|
-			face = Face.new(k, v)
-			faces[k] = face
-			edges = face.edges
+		face_array.each do |f|
+			face = Face.new(f)
+
+			edges = orientFaceEdges(f)
 			edges.each do |e|
+				face.add_adj_edge(e)
+				@edges[e].add_face(f)
+			end
 
-
-
+			nodes = nodesFromFace(f)
+			nodes.each do |n|
+				face.add_node(n)
+				@nodes[n].add_face(f)
 			end
 		end
 		return faces
 	end
-
 
 	def processEdges(adjacency)
 		edges = {}
@@ -91,6 +100,10 @@ class BarnetteGraph
 		return edges
 	end
 
+	def nodesFromFace(name)
+		node_array = name.split("_").slice(0..-2)
+	end
+
 	def orientEdge(edge)
 		if self.edge?(edge)
 			return edge
@@ -105,7 +118,7 @@ class BarnetteGraph
 		edge_array = name.split("_")
 		count = edge_array.count - 1
 		unordered_edges = (0..count).map{|t| "#{edge_array[t]}_#{edge_array[t+1]}"}
-		ordered_edges.map{|e| orientEdges(e)}
+		unordered_edges.map{|e| orientEdge(e)}
 	end
 
 	def reverseEdgeName(name)
@@ -140,6 +153,10 @@ class Node
 		@adj_edges
 	end
 
+	def add_face(face)
+		@adj_faces << face
+	end
+
 end
 
 class Edge
@@ -156,6 +173,10 @@ class Edge
 		@adj_edges << new_edge if new_edge != name
 	end
 
+	def add_face(face)
+		@adj_faces << face
+	end
+
 	def name
 		@name
 	end
@@ -167,24 +188,24 @@ class Edge
 end
 
 class Face
-	def initialize(name, vertices)
+	def initialize(name)
 		@name = name
-		@adj_edges = populateEdges(name)
+		@adj_edges = []
 		@radiating_edges = []
-		@adj_nodes = vertices
+		@adj_nodes = []
 		@adj_faces = []
 	end
 
-	def add_node
-
+	def add_node(node)
+		@adj_nodes << node
 	end
 
-	def add_adj_edge
-
+	def add_adj_edge(edge)
+		@adj_edges << edge
 	end
 
-	def add_radiating_edge
-
+	def add_radiating_edge(edge)
+		@radiating_edges << edge
 	end
 
 	def edges
