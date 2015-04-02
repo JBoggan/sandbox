@@ -75,6 +75,7 @@ class BarnetteGraph
 				face.add_node(n)
 				@nodes[n].add_face(f)
 			end
+			faces[f] = face
 		end
 		return faces
 	end
