@@ -72,15 +72,16 @@ class BarnetteGraph
 		hcycles = {}
 		cycle_array.each do |h|
 			hcycle = Hcycle.new(h)
-			nodes = nodesFromCycle(h)
-			nodes.each do |n|
-				hcycle.add_node(n)
-				@nodes[n].add_hcycle(h)
+			
+			edges = orientCycleEdges(h)
+			edges.each do |e|
+				edge = self.edges[e]
+				hcycle.add_edge(e)
+				@edges[e].add_hcycle(h)
 			end
-
+			hcycles[h] = hcycle
 		end
-
-
+		return hcycles
 	end
 
 	def processFaces(face_array)
@@ -88,7 +89,7 @@ class BarnetteGraph
 		face_array.each do |f|
 			face = Face.new(f)
 
-			edges = orientFaceEdges(f)
+			edges = orientCycleEdges(f)
 			edges.each do |e|
 				edge = self.edges[e]
 				if !edge.faces.empty?
@@ -147,7 +148,7 @@ class BarnetteGraph
 		end
 	end
 
-	def orientFaceEdges(name)
+	def orientCycleEdges(name)
 		edge_array = name.split("_")
 		puts edge_array.to_s
 		count = edge_array.count - 1
@@ -193,19 +194,10 @@ class Node
 		@adj_nodes = []
 		@adj_faces = []
 		@adj_edges = []
-		@hcycles = []
 	end
 
 	def name
 		@name
-	end
-
-	def hcycles
-		@hcycles
-	end
-
-	def add_hcycle(hcycle)
-		@hcycles << hcycle
 	end
 
 	def add_adj_edge(edge_array)
@@ -276,11 +268,6 @@ class Face
 		@radiating_edges = []
 		@adj_nodes = []
 		@adj_faces = []
-		@hcycles = []
-	end
-
-	def add_hcycle(hcycle)
-		@hcycles << hcycle
 	end
 
 	def add_adj_face(face)
@@ -313,10 +300,6 @@ class Face
 
 	def adj_faces
 		@adj_faces
-	end
-
-	def hcycles
-		@hcycles
 	end
 
 	def name
