@@ -184,7 +184,7 @@ class BarnetteGraph
 	end
 
 	def self.cube_hcycles
-		['a_b_c_d_']
+		['a_b_c_d_h_g_f_e_a','b_c_d_a_e_h_g_f_b', 'c_d_a_b_f_e_h_g_c', 'd_a_b_c_g_f_e_h_d', 'a_e_f_b_c_g_h_d_a', 'b_f_g_c_d_h_e_a_b']
 	end
 end
 
@@ -310,20 +310,11 @@ end
 class Hcycle
 	def initialize(name)
 		@name = name
-		@nodes = []
 		@edges = []
 	end
 
 	def add_node(node)
 		@nodes << node
-	end
-
-	def add_edge(edge)
-		@edges << edge
-	end
-
-	def nodes
-		@nodes
 	end
 
 	def edges
