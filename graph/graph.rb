@@ -11,6 +11,10 @@ class BarnetteGraph
 		@faces
 	end
 
+	def hcycles
+		@hcycles
+	end
+
 	def isBipartite?
 		0 == self.faces.select{|f| f.nodes.count != 0 % 2}
 	end
@@ -51,15 +55,30 @@ class BarnetteGraph
 		self.faces.include?(name)
 	end
 
+	def hcycle?(name)
+		self.hcycles.include?(name)
+	end
 
-	def initialize(adjacency, face_array, h_cycles = nil)
+
+
+	def initialize(adjacency, face_array, hcycles = nil)
 		@nodes = {}
 		@edges = processEdges(adjacency)
 		@faces = processFaces(face_array)
-		@hamiltonianCycles = processHCycles(h_cycles)
+		@hcycles = processHcycles(hcycles)
 	end
 
-	def processHCycles(cycle_array)
+	def processHcycles(cycle_array)
+		hcycles = {}
+		cycle_array.each do |h|
+			hcycle = Hcycle.new(h)
+			nodes = nodesFromCycle(h)
+			nodes.each do |n|
+				hcycle.add_node(n)
+				@nodes[n].add_hcycle(h)
+			end
+
+		end
 
 
 	end
@@ -83,7 +102,7 @@ class BarnetteGraph
 
 			end
 
-			nodes = nodesFromFace(f)
+			nodes = nodesFromCycle(f)
 			nodes.each do |n|
 				face.add_node(n)
 				@nodes[n].add_face(f)
@@ -114,7 +133,7 @@ class BarnetteGraph
 		return edges
 	end
 
-	def nodesFromFace(name)
+	def nodesFromCycle(name)
 		node_array = name.split("_").slice(0..-2)
 	end
 
@@ -162,6 +181,10 @@ class BarnetteGraph
 	def self.cube_faces
 		['a_b_c_d_a', 'e_f_g_h_e', 'a_b_f_e_a', 'b_c_g_f_b', 'c_d_h_g_c', 'a_e_h_d_a']
 	end
+
+	def self.cube_hcycles
+		['a_b_c_d_']
+	end
 end
 
 class Node
@@ -170,10 +193,19 @@ class Node
 		@adj_nodes = []
 		@adj_faces = []
 		@adj_edges = []
+		@hcycles = []
 	end
 
 	def name
 		@name
+	end
+
+	def hcycles
+		@hcycles
+	end
+
+	def add_hcycle(hcycle)
+		@hcycles << hcycle
 	end
 
 	def add_adj_edge(edge_array)
@@ -202,8 +234,13 @@ class Edge
 		@adj_nodes = [edge_array[0].to_s, edge_array[1].to_s]
 		@adj_faces = []
 		@adj_edges = []
+		@hcycles = []
 		#check to see if adj nodes have non-self edges
 		#if so add adjacent edge
+	end
+
+	def add_hcycle(hcycle)
+		@hcycles << hcycle
 	end
 
 	def add_adj_edge(new_edge)
@@ -212,6 +249,10 @@ class Edge
 
 	def add_face(face)
 		@adj_faces << face
+	end
+
+	def hcycles
+		@hcycles
 	end
 
 	def name
@@ -235,6 +276,11 @@ class Face
 		@radiating_edges = []
 		@adj_nodes = []
 		@adj_faces = []
+		@hcycles = []
+	end
+
+	def add_hcycle(hcycle)
+		@hcycles << hcycle
 	end
 
 	def add_adj_face(face)
@@ -267,6 +313,10 @@ class Face
 
 	def adj_faces
 		@adj_faces
+	end
+
+	def hcycles
+		@hcycles
 	end
 
 	def name
