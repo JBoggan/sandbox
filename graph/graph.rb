@@ -59,6 +59,11 @@ class BarnetteGraph
 		@hamiltonianCycles = processHCycles(h_cycles)
 	end
 
+	def processHCycles(cycle_array)
+
+
+	end
+
 	def processFaces(face_array)
 		faces = {}
 		face_array.each do |f|
@@ -66,8 +71,16 @@ class BarnetteGraph
 
 			edges = orientFaceEdges(f)
 			edges.each do |e|
+				edge = self.edges[e]
+				if !edge.faces.empty?
+					other_face = faces[edge.faces[0]]
+					face.add_adj_face(other_face.name)
+					other_face.add_adj_face(face.name)
+					faces[other_face.name] = other_face
+				end
 				face.add_adj_edge(e)
 				@edges[e].add_face(f)
+
 			end
 
 			nodes = nodesFromFace(f)
@@ -209,6 +222,10 @@ class Edge
 		@adj_nodes
 	end
 
+	def faces
+		@adj_faces
+	end
+
 end
 
 class Face
@@ -218,6 +235,10 @@ class Face
 		@radiating_edges = []
 		@adj_nodes = []
 		@adj_faces = []
+	end
+
+	def add_adj_face(face)
+		@adj_faces << face
 	end
 
 	def add_node(node)
