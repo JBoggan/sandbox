@@ -52,11 +52,11 @@ class BarnetteGraph
 	end
 
 
-	def initialize(adjacency, face_array)
+	def initialize(adjacency, face_array, h_cycles = nil)
 		@nodes = {}
 		@edges = processEdges(adjacency)
 		@faces = processFaces(face_array)
-		@hamiltonianCycles = {}
+		@hamiltonianCycles = processHCycles(h_cycles)
 	end
 
 	def processFaces(face_array)
@@ -128,6 +128,26 @@ class BarnetteGraph
 	def reverseEdgeName(name)
 		array = name.split("_")
 		return array[1]+"_"+array[0]
+	end
+
+	def self.cube_edges
+		[["a","b"],
+		["b","c"],
+		["c","d"],
+		["d","a"],
+		["e","f"],
+		["f","g"],
+		["g","h"],
+		["h","e"],
+		["a","e"],
+		["b","f"],
+		["c","g"],
+		["d","h"]
+		]
+	end
+
+	def self.cube_faces
+		['a_b_c_d_a', 'e_f_g_h_e', 'a_b_f_e_a', 'b_c_g_f_b', 'c_d_h_g_c', 'a_e_h_d_a']
 	end
 end
 
