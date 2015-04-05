@@ -273,3 +273,29 @@ class Face
 		@name
 	end
 end
+
+class Hcycle
+	def initialize(name)
+		@name = name
+		@nodes = []
+		@edges = []
+	end
+
+	def add_node(node)
+		@nodes << node
+	end
+
+	def add_edge(edge)
+		@edges << edge
+	end
+
+	def nodes
+		@nodes
+	end
+
+	def edges
+		@edges
+	end
+
+end
+
