@@ -169,7 +169,10 @@ class BarnetteGraph
 		return array[1]+"_"+array[0]
 	end
 
-	def algorithm
+	def algorithm(edge_one, edge_two)
+		edge_one.split('_').map{|n| self.nodes[n].drop_edge(edge_one)}
+		edge_two.split('_').map{|n| self.nodes[n].drop_edge(edge_two)}
+
 
 	end
 
@@ -222,6 +225,10 @@ class Node
 		self.add_adj_node(other_node)
 	end
 
+	def drop_edge(old_edge)
+		@adj_edges.delete(old_edge)
+	end
+
 	def add_adj_node(node_name)
 		@adj_nodes << node_name
 	end
@@ -253,6 +260,10 @@ class Edge
 
 	def add_adj_edge(new_edge)
 		@adj_edges << new_edge if new_edge != name
+	end
+
+	def drop_edge(old_edge)
+		@adj_edges.delete(old_edge)
 	end
 
 	def add_face(face)
