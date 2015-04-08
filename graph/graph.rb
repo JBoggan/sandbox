@@ -23,6 +23,10 @@ class BarnetteGraph
 
 	end
 
+	def incrementNode
+		@max_node.next!
+	end
+
 	def isHamiltonian?
 
 	end
@@ -62,6 +66,7 @@ class BarnetteGraph
 
 
 	def initialize(adjacency, face_array, hcycles = nil)
+		@max_node = ""
 		@nodes = {}
 		@edges = processEdges(adjacency)
 		@faces = processFaces(face_array)
@@ -125,6 +130,7 @@ class BarnetteGraph
 					adj_edges = node.edges
 					adj_edges.map{|x| edge.add_adj_edge(x); edges[x].add_adj_edge(edge.name)}
 				else
+					@max_node = n if n.length > @max_node.length || n > @max_node
 					node = Node.new(n)
 					node.add_adj_edge(e)
 					@nodes[node.name] = node
