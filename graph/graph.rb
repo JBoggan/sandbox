@@ -163,6 +163,16 @@ class BarnetteGraph
 		return array[1]+"_"+array[0]
 	end
 
+	def algorithm
+
+	end
+
+	def findSquare
+		self.faces.keys.each do |f|
+			return f if f.length == 9
+		end
+	end
+
 	def self.cube_edges
 		[["a","b"],
 		["b","c"],
