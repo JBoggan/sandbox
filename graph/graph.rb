@@ -169,10 +169,21 @@ class BarnetteGraph
 		return array[1]+"_"+array[0]
 	end
 
-	def algorithm(edge_one, edge_two)
-		edge_one.split('_').map{|n| self.nodes[n].drop_edge(edge_one)}
-		edge_two.split('_').map{|n| self.nodes[n].drop_edge(edge_two)}
+	def algorithm(edge_array)
+		if edge_array.count == 2
+			edge_array.map{|e| e.split('_').map{|n| self.nodes[n].drop_edge(e)} 
 
+
+		end
+
+
+	end
+
+	def newAlgoEdges
+
+	end
+
+	def newAlgoFaces
 
 	end
 
