@@ -170,12 +170,17 @@ class BarnetteGraph
 	end
 
 	def algorithm(edge_array)
-		if edge_array.count == 2
-			edge_array.map{|e| e.split('_').map{|n| self.nodes[n].drop_edge(e)} 
+		return nil if edge_array.count != 2
+		edge_array.map{|e| dropEdge(e)}
 
 
-		end
 
+		
+
+	end
+
+	def dropEdge(edge)
+		edge.split('_').map{|n| self.nodes[n].drop_edge(e)
 
 	end
 
