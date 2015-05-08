@@ -180,6 +180,8 @@ class BarnetteGraph
 	def dropEdge(edge)
 		edge.split('_').map{|n| self.nodes[n].drop_edge(edge)}
 		self.edges[edge].adj_edges.map{|e| self.edges[e].drop_edge(edge)}
+		#mergeFaces(edge)
+		#transformHamiltonian(edge)
 	end
 
 	def segmentEdge(edge)
