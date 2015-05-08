@@ -39,12 +39,8 @@ class BarnetteGraph
 		0 == self.nodes.select{|n| n.edges.count != 3}
 	end
 
-	def hamiltonianCycles
-	end
-
-	def addSquare(edge_one, edge_two)
-
-
+	def render
+		#for d3.js visualization
 	end
 
 	def node?(name)
@@ -169,18 +165,32 @@ class BarnetteGraph
 		return array[1]+"_"+array[0]
 	end
 
-	def algorithm(edge_array)
+	def algorithmUp(edge_array)
+		#edge_array.map{|e| segmentEdge(e)}
+		#connectSegments
+	end
+
+	def algorithmDown(edge_array)
 		return nil if edge_array.count != 2
 		edge_array.map{|e| dropEdge(e)}
-
-
-
-		
-
+		#desegment
+		#
 	end
 
 	def dropEdge(edge)
-		edge.split('_').map{|n| self.nodes[n].drop_edge(e)
+		edge.split('_').map{|n| self.nodes[n].drop_edge(edge)}
+		self.edges[edge].adj_edges.map{|e| self.edges[e].drop_edge(edge)}
+	end
+
+	def segmentEdge(edge)
+
+	end
+
+	def desegment
+
+	end
+
+	def connectSegments
 
 	end
 
@@ -294,6 +304,10 @@ class Edge
 		@name
 	end
 
+	def adj_edges
+		@adj_edges
+	end
+
 	def nodes
 		@adj_nodes
 	end
@@ -356,8 +370,8 @@ class Hcycle
 		@edges = []
 	end
 
-	def add_node(node)
-		@nodes << node
+	def add_edge(edge)
+		@edges << edge
 	end
 
 	def edges
