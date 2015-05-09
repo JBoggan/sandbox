@@ -1,4 +1,14 @@
 class BarnetteGraph
+=begin
+Notes:
+
+Faces must be defined by the user since this is computationally very difficult to work out.
+As a convention that will simplify merging and division, all faces are labeled in clockwise orientation
+
+=end
+
+
+
 	def nodes 
 	 	@nodes
 	end
@@ -182,6 +192,35 @@ class BarnetteGraph
 		self.edges[edge].adj_edges.map{|e| self.edges[e].drop_edge(edge)}
 		#mergeFaces(edge)
 		#transformHamiltonian(edge)
+	end
+
+	def mergeFaces(edge)
+		faces = @edges[edge].faces
+		face1 = faces[0]
+		face2 = faces[1]
+		
+		sum_edges = face1.edges + face2.edges
+		sum_rad_edges = face1.radiating_edges + face2.radiating_edges
+		sum_nodes = face1.nodes + face2.nodes
+		sum_faces = face1.adj_faces + face2.adj_faces
+
+		sum_rad_edges.select!{|e| !face1.edges.include?(e) && !face2.edges.include?(e)}
+		sum_nodes.uniq!
+		sum_faces.select!{|f| face1.name != f && face2.name != f}.uniq!
+
+		sum_name = mergeFaceName(edge)
+
+
+
+	end
+
+	def mergeFaceName(edge)
+		faces = @edges[edge].faces
+		face1 = faces[0]
+		face2 = faces[1]
+
+		partial_name1 = face1.name.split(edge)
+		partial_name2 = face2.name.split(edge)
 	end
 
 	def segmentEdge(edge)
