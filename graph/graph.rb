@@ -248,7 +248,9 @@ As a convention that will simplify merging and division, all faces are labeled i
 			return f if f.length == 9
 		end
 	end
+end
 
+class Example
 	def self.cube_edges
 		[["a","b"],
 		["b","c"],
@@ -272,6 +274,58 @@ As a convention that will simplify merging and division, all faces are labeled i
 	def self.cube_hcycles
 		['a_b_c_d_h_g_f_e_a','b_c_d_a_e_h_g_f_b', 'c_d_a_b_f_e_h_g_c', 'd_a_b_c_g_f_e_h_d', 'a_e_f_b_c_g_h_d_a', 'b_f_g_c_d_h_e_a_b']
 	end
+
+	def self.octo_edges
+		[["a","b"], ["b","c"], ["c","d"], ["d","e"],
+		["e","f"], ["f","g"], ["g","h"], ["h","a"],
+		["i","j"], ["j","k"], ["k","l"], ["l","m"],
+		["m","n"], ["n","o"], ["o","p"], ["p","i"],
+		["a","p"], ["b","o"], ["c","n"], ["d","m"],
+		["e","l"], ["f","k"], ["g","j"], ["h","i"]
+		]
+
+	end
+
+	def self.octo_faces
+		['a_b_c_d_e_f_g_h_a', 'i_j_k_l_m_n_o_p_i',
+		'a_b_o_p_a', 'b_c_n_o_b', 'c_d_m_n_c', 'd_e_l_m_d',
+		'e_f_k_l_e', 'f_g_j_k_f', 'g_h_i_j_g', 'h_a_p_i_h']
+	end
+
+	def self.octo_hcycles
+		['a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_a',
+		'a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_a',
+		'a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_a',
+		'a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_a',
+		'a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_a',
+		'a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_a',
+		'a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_a',
+		'a_b_c_d_e_f_g_h_i_j_k_l_m_n_o_p_a',			
+		]
+	end
+
+	def self.hex_edges
+		[["a","b"], ["b","c"], ["c","d"], ["d","e"], ["e","f"], ["f","a"],
+		["g","h"], ["h","i"], ["i","j"], ["j","k"], ["k","l"], ["l","g"],
+		["a","l"], ["b","k"], ["c","j"], ["d","i"], ["e","h"], ["f","g"]
+		]
+	end
+
+	def self.hex_faces
+		['a_b_c_d_e_f_a', 'g_h_i_j_k_l_g',
+		'a_b_k_l_a', 'b_c_j_k_b', 'c_d_i_j_c', 'd_e_h_i_d', 'e_f_g_h_e', 'f_a_l_j_f'
+		]
+	end
+
+	def self.hex_hcycles
+		['a_b_c_d_e_f_g_h_i_j_k_l_a', 'a_b_c_d_e_f_g_h_i_j_k_l_a', 'a_b_c_d_e_f_g_h_i_j_k_l_a', 
+		'a_b_c_d_e_f_g_h_i_j_k_l_a', 'a_b_c_d_e_f_g_h_i_j_k_l_a', 'a_b_c_d_e_f_g_h_i_j_k_l_a', 
+		'a_b_k_j_c_d_i_h_e_f_j_l_a', 'a_l_k_b_c_j_i_d_e_h_g_f_a'
+		]
+	end
+
+
+
 end
 
 class Node
