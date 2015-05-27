@@ -183,7 +183,7 @@ As a convention that will simplify merging and division, all faces are labeled i
 	def algorithmDown(edge_array)
 		return nil if edge_array.count != 2
 		edge_array.map{|e| dropEdge(e)}
-		#desegment
+		#desegment	
 		#
 	end
 
@@ -210,6 +210,10 @@ As a convention that will simplify merging and division, all faces are labeled i
 
 		sum_name = mergeFaceName(edge)
 
+		self.drop_face(face1)
+		self.drop_face(face2)
+		new_face = Face.new(sum_name)
+		new_face
 
 
 	end
@@ -219,8 +223,32 @@ As a convention that will simplify merging and division, all faces are labeled i
 		face1 = faces[0]
 		face2 = faces[1]
 
-		partial_name1 = face1.name.split(edge)
-		partial_name2 = face2.name.split(edge)
+		edges = face1.name.split(edge) + face2.name.split(edge)
+		edges - [edge]
+		directed_hash = make_directed_hash(edges)
+		new_name = cycle_from_directed_hash(directed_hash)
+	end
+
+	def make_directed_hash(edge_array)
+		hash = {}
+		edge_array.map{|e| e.split("_")}.map{|array| hash[array[0]] = array[1]}
+		return hash
+	end
+
+	def cycle_from_directed_hash(hash)
+		max = hash.keys.count
+		current = hash.keys.first
+		start = current
+		last = ""
+		cycle = current
+		current = hash[current]
+		count = 1
+		until last == first || count > max
+			cycle += ("_" + current)
+			current = hash[current]
+			count += 1
+		end
+		return cycle
 	end
 
 	def segmentEdge(edge)
