@@ -1,6 +1,6 @@
 class Array
 	def a
-		File.write("#{self[0]}", self.join("\n"))
+		File.write("#{self.hash}", self.join("\n"))
 		self
 	end
 
@@ -12,14 +12,37 @@ class Array
 		map(&:succ)
 	end
 
+	def d
+		self
+	end
+
+	def e
+		map(&:chop)
+	end
+
+	def f
+
+	end
+
+	def g
+
+	end
+
+	def h
+
+	end
+
 end
 
-def parse
-	@file = ARGV[0]
+def parse(filename)
+	@file = filename   #ARGV[0]
 	array = open([])
 	@args = array
 	array.each do |x|
-		@args = @args.send(x)
+		x.split("").each_with_index do |char,i|
+			@position = i
+			@args = @args.send(char)
+		end
 	end
 end
 
