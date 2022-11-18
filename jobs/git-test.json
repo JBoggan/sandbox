@@ -1,0 +1,39 @@
+{
+  "name" : "git-test",
+  "description" : "",
+  "role" : "arn:aws:iam::647044782590:role/datalake/prd-Format-GlueRole",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-647044782590-us-west-2/scripts/git-test.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-647044782590-us-west-2/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-enable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-647044782590-us-west-2/temporary/"
+  },
+  "maxRetries" : 3,
+  "allocatedCapacity" : 10,
+  "timeout" : 2880,
+  "maxCapacity" : 10.0,
+  "glueVersion" : "3.0",
+  "numberOfWorkers" : 10,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1\":{\"S3CatalogSource\":{\"AdditionalOptions\":{},\"Database\":\"test\",\"Name\":\"S3 bucket\",\"PartitionPredicate\":\"\",\"Table\":\"robco_pri_bgd_us_west_2_dev_dl_raw\"}},\"node-2\":{\"ApplyMapping\":{\"Inputs\":[\"node-1\"],\"Mapping\":[],\"Name\":\"ApplyMapping\"}},\"node-3\":{\"RedshiftTarget\":{\"Database\":\"test\",\"Inputs\":[\"node-2\"],\"Name\":\"Redshift Cluster\",\"RedshiftTmpDir\":\"\",\"Table\":\"robco_pri_bgd_us_west_2_dev_dl_raw\"}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "sandbox",
+    "branch" : "master",
+    "folder" : "jobs"
+  }
+}
